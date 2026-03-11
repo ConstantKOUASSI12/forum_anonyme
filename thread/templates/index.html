@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Forum — Messages</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0f0f0f;
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        header {
+            border-bottom: 1px solid #333;
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+        header h1 { font-size: 1.4rem; color: #7fffd4; letter-spacing: 2px; }
+        header p { font-size: 0.75rem; color: #666; margin-top: 0.3rem; }
+        .actions { margin-bottom: 1.5rem; }
+        .actions a {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: #7fffd4;
+            color: #0f0f0f;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .actions a:hover { background: #5fd4aa; }
+        .message {
+            border: 1px solid #222;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: #151515;
+        }
+        .message .meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        .pseudo { color: #7fffd4; font-size: 0.85rem; font-weight: bold; }
+        .date { color: #555; font-size: 0.75rem; }
+        .content { font-size: 0.9rem; line-height: 1.5; color: #ccc; }
+        .empty { color: #555; font-size: 0.85rem; text-align: center; padding: 3rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>// FORUM ANONYME</h1>
+        <p>Lecture des messages</p>
+    </header>
+
+    <div class="actions">
+        <a href="http://localhost:8080">+ Poster un message</a>
+    </div>
+
+    {% if messages %}
+        {% for msg in messages %}
+        <div class="message">
+            <div class="meta">
+                <span class="pseudo">{{ msg.pseudo }}</span>
+                <span class="date">{{ msg.created_at[:16] }}</span>
+            </div>
+            <div class="content">{{ msg.content }}</div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p class="empty">Aucun message pour l'instant.</p>
+    {% endif %}
+</body>
+</html>
