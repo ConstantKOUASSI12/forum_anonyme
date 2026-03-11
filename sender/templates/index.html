@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum Anonyme — Poster</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0f0f0f;
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        header {
+            border-bottom: 1px solid #333;
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+        header h1 { font-size: 1.4rem; color: #7fffd4; letter-spacing: 2px; }
+        header p { font-size: 0.75rem; color: #666; margin-top: 0.3rem; }
+        .form-group { margin-bottom: 1.2rem; }
+        label { display: block; font-size: 0.75rem; color: #888; margin-bottom: 0.4rem; letter-spacing: 1px; }
+        input[type="text"], textarea {
+            width: 100%;
+            max-width: 500px;
+            background: #151515;
+            border: 1px solid #333;
+            color: #e0e0e0;
+            padding: 0.6rem 0.8rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            outline: none;
+        }
+        input[type="text"]:focus, textarea:focus { border-color: #7fffd4; }
+        textarea { resize: vertical; min-height: 120px; }
+        button {
+            padding: 0.5rem 1.5rem;
+            background: #7fffd4;
+            color: #0f0f0f;
+            border: none;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            cursor: pointer;
+        }
+        button:hover { background: #5fd4aa; }
+        .alert {
+            padding: 0.6rem 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.85rem;
+            max-width: 500px;
+        }
+        .alert.error { border: 1px solid #e05555; color: #e05555; background: #1a0f0f; }
+        .alert.success { border: 1px solid #7fffd4; color: #7fffd4; background: #0f1a16; }
+        .actions { margin-bottom: 1.5rem; }
+        .actions a { color: #555; font-size: 0.78rem; text-decoration: none; }
+        .actions a:hover { color: #7fffd4; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>// FORUM ANONYME</h1>
+        <p>Poster un message — port 8080</p>
+    </header>
+
+    <div class="actions">
+        <a href="http://localhost:80">← Voir les messages</a>
+    </div>
+
+    {% if error %}
+    <div class="alert error">{{ error }}</div>
+    {% endif %}
+    {% if success %}
+    <div class="alert success">{{ success }}</div>
+    {% endif %}
+
+    <form action="/send" method="POST">
+        <div class="form-group">
+            <label for="pseudo">PSEUDONYME</label>
+            <input type="text" id="pseudo" name="pseudo" placeholder="ex: anonyme42" maxlength="50" required>
+        </div>
+        <div class="form-group">
+            <label for="content">MESSAGE</label>
+            <textarea id="content" name="content" placeholder="Écris ton message ici..." maxlength="1000" required></textarea>
+        </div>
+        <button type="submit">ENVOYER</button>
+    </form>
+</body>
+</html>
