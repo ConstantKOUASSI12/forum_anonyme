@@ -1,0 +1,67 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: forum_db
+    environment:
+      POSTGRES_DB: forum
+      POSTGRES_USER: forum
+      POSTGRES_PASSWORD: password
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - db_network
+    restart: unless-stopped
+
+  api:
+    build: ./api
+    container_name: forum_api
+    environment:
+      DATABASE_URL: postgresql://forum:password@db:5432/forum
+    depends_on:
+      - db
+    networks:
+      - internal
+      - db_network
+    restart: unless-stopped
+
+  thread:
+    build: ./thread
+    container_name: forum_thread
+    ports:
+      - "80:80"
+    environment:
+      API_URL: http://api:5000
+    depends_on:
+      - api
+    networks:
+      - internal
+      - web_network
+    restart: unless-stopped
+
+  sender:
+    build: ./sender
+    container_name: forum_sender
+    ports:
+      - "8080:8080"
+    environment:
+      API_URL: http://api:5000
+    depends_on:
+      - api
+    networks:
+      - internal
+      - web_network
+    restart: unless-stopped
+
+volumes:
+  db_data:
+
+networks:
+  internal:
+    driver: bridge
+  db_network:
+    driver: bridge
+  web_network:
+    driver: bridge
